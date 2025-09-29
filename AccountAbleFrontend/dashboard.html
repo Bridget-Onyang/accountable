@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head><title>Dashboard</title></head>
+<body>
+  <h1 class="title">Welcome, Drusilla</h1>
+  <div class="card-container">
+    <div class="card card-1"><h2>Client</h2><p>100</p></div>
+    <div class="card card-2"><h2>Transactions</h2><p>23</p></div>
+    <div class="card card-3"><h2>Invoices</h2><p>10</p></div>
+    <div class="card card-4"><h2>Audit Trails</h2><p>30</p></div>
+  </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      const token = localStorage.getItem("token");
+      const userRes = await fetch("http://127.0.0.1:5000/auth/me", {
+        headers: { "Authorization": `Bearer ${token}` }
+      });
+      const userData = await userRes.json();
+      document.querySelector(".title").textContent = `Welcome, ${userData.name}`;
+
+      const statsRes = await fetch("http://127.0.0.1:5000/dashboard/stats", {
+        headers: { "Authorization": `Bearer ${token}` }
+      });
+      const stats = await statsRes.json();
+      document.querySelector(".card-1 p").textContent = stats.clients;
+      document.querySelector(".card-2 p").textContent = stats.transactions;
+      document.querySelector(".card-3 p").textContent = stats.invoices;
+      document.querySelector(".card-4 p").textContent = stats.audits;
+    });
+  </script>
+</body>
+</html>

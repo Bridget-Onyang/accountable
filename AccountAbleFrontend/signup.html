@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head><title>Signup</title></head>
+<body>
+  <h2>Signup</h2>
+  <form id="signup-form">
+    <input type="text" id="name" placeholder="Name" required /><br />
+    <input type="email" id="email" placeholder="Email" required /><br />
+    <input type="password" id="password" placeholder="Password" required /><br />
+    <button type="submit">Signup</button>
+  </form>
+  <script>
+    document.getElementById("signup-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const response = await fetch("http://127.0.0.1:5000/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password })
+      });
+      const data = await response.json();
+      if (response.ok) {
+        alert("Signup successful");
+        window.location.href = "login.html";
+      } else {
+        alert(data.message || "Signup failed");
+      }
+    });
+  </script>
+</body>
+</html>
